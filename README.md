@@ -1,2 +1,2 @@
 # Conway-s-Game-of-Life
-Simple Life simulation, already works. TODO: GUI
+Evolution simulation, working with GUI. TODO: save/load.
