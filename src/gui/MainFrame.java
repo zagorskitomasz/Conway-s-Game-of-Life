@@ -19,8 +19,8 @@ public class MainFrame extends JFrame{
 	int size;
 	JPanel gamePanel;
 	
-	public MainFrame(int s){
-		size=s+200;
+	public MainFrame(){
+		size=700;
 		game = new Game(size, new int[] {3}, new int[] {2, 3}, 2);
 		
 		Toolkit kit = Toolkit.getDefaultToolkit();
@@ -31,12 +31,14 @@ public class MainFrame extends JFrame{
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
 		
-		//setLocationByPlatform(true);
-		//setExtendedState(Frame.NORMAL);
 		
 		JPanel menuPanel = new MenuPanel(game);
 		gamePanel = new GamePanel(game);
-		gamePanel.addMouseListener(new MouseHandler((GamePanel)gamePanel));
+		
+		MouseHandler mouse = new MouseHandler((GamePanel)gamePanel);
+		gamePanel.addMouseListener(mouse);
+		gamePanel.addMouseMotionListener(mouse);
+		gamePanel.addMouseWheelListener(mouse);
 		
 		Border menuBorder = BorderFactory.createEtchedBorder();
 		menuPanel.setBorder(menuBorder);

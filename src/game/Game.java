@@ -6,12 +6,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import gui.GameOfLife;
 import gui.MenuPanel;
 
 public class Game {
 	private Cell[][] board;
-	private int width, height;
+	private int width, height, margin;
 	private int[] revive, survive;
 	private Lock gameLock;
 	private int speed;
@@ -21,6 +20,7 @@ public class Game {
 	public Game(int size, int[] r, int[] s, float sp){
 		width=size;
 		height=size;
+		margin=310;
 		revive=r;
 		survive=s;
 		speed=(int)(1000/sp);
@@ -64,8 +64,36 @@ public class Game {
 		}
 	}
 	
+	public void zoomIn(){
+		gameLock.lock();
+		
+		try{
+			setMargin((int)Math.round(Math.min(350-(350-getMargin())/1.4, 345)));
+			panel.repaint();
+		}
+		finally{
+			gameLock.unlock();
+		}
+	}
+	
+	public void zoomOut(){
+		gameLock.lock();
+		
+		try{
+			setMargin((int)Math.round(Math.max(350-(350-getMargin())*1.4, 100)));
+			panel.repaint();
+		}
+		finally{
+			gameLock.unlock();
+		}
+	}
+	
 	public void setPanel(JPanel p){
 		panel = p;
+	}
+	
+	public JPanel getPanel(){
+		return panel;
 	}
 	
 	public int getWidth(){
@@ -74,6 +102,14 @@ public class Game {
 	
 	public int getHeight(){
 		return height;
+	}
+	
+	public int getMargin(){
+		return margin;
+	}
+	
+	public void setMargin(int m){
+		margin=m;;
 	}
 	
 	public void setRevive(int... numbers){
@@ -144,27 +180,7 @@ public class Game {
 			gameLock.unlock();
 		}
 	}
-	
-	public void resize(){
-		gameLock.lock();
-		try{
-			clear();
-			int size = GameOfLife.setSize()+200;
-			width = size;
-			height = size;
-			board = new Cell[size][size];
-			
-			for(int i=0; i<board.length; i++){
-				for(int j=0; j<board[0].length; j++)
-					board[i][j] = new Cell();
-			}
-			panel.repaint();
-		}
-		finally{
-			gameLock.unlock();
-		}
-	}
-	
+
 	public void iterate(){
 		gameLock.lock();
 		
@@ -231,41 +247,22 @@ public class Game {
 		}
 	}
 	
-	public void moveUp(){
+	public boolean moveUp(int dist){
 		gameLock.lock();
 		
 		try{
 			Cell[][] newBoard = new Cell[width][height];
-			
-			for(int i=0; i<width; i++)
-				newBoard[i][0] = new Cell();
 			
 			for(int i=0; i<width; i++){
-				for(int j=0; j<height-1; j++){
-					newBoard[i][j+1] = board[i][j];
+				for(int j=0; j<dist; j++){
+					newBoard[i][j] = new Cell();
 				}
 			}
-			
-			board = newBoard;
-			panel.repaint();
-		}
-		finally{
-			gameLock.unlock();
-		}
-	}
-	
-	public void moveDown(){
-		gameLock.lock();
-		
-		try{
-			Cell[][] newBoard = new Cell[width][height];
-			
-			for(int i=0; i<width; i++)
-				newBoard[i][height-1] = new Cell();
+				
 			
 			for(int i=0; i<width; i++){
-				for(int j=1; j<height; j++){
-					newBoard[i][j-1] = board[i][j];
+				for(int j=0; j<height-dist; j++){
+					newBoard[i][j+dist] = board[i][j];
 				}
 			}
 			
@@ -275,20 +272,26 @@ public class Game {
 		finally{
 			gameLock.unlock();
 		}
+		if(dist>0) return true;
+		else return false;
 	}
 	
-	public void moveLeft(){
+	public boolean moveDown(int dist){
 		gameLock.lock();
 		
 		try{
 			Cell[][] newBoard = new Cell[width][height];
 			
-			for(int j=0; j<height; j++)
-				newBoard[0][j] = new Cell();
+			for(int i=0; i<width; i++){
+				for(int j=dist; j<height; j++){
+					newBoard[i][j] = new Cell();
+				}
+			}
+				
 			
-			for(int i=0; i<width-1; i++){
-				for(int j=0; j<height; j++){
-					newBoard[i+1][j] = board[i][j];
+			for(int i=0; i<width; i++){
+				for(int j=0; j<height-dist; j++){
+					newBoard[i][j] = board[i][j+dist];
 				}
 			}
 			
@@ -298,20 +301,25 @@ public class Game {
 		finally{
 			gameLock.unlock();
 		}
+		if(dist>0) return true;
+		else return false;
 	}
 	
-	public void moveRight(){
+	public boolean moveLeft(int dist){
 		gameLock.lock();
 		
 		try{
 			Cell[][] newBoard = new Cell[width][height];
 			
-			for(int j=0; j<height; j++)
-				newBoard[width-1][j] = new Cell();
-			
-			for(int i=1; i<width; i++){
+			for(int i=0; i<dist; i++){
 				for(int j=0; j<height; j++){
-					newBoard[i-1][j] = board[i][j];
+					newBoard[i][j] = new Cell();
+				}
+			}
+			
+			for(int i=0; i<width-dist; i++){
+				for(int j=0; j<height; j++){
+					newBoard[i+dist][j] = board[i][j];
 				}
 			}
 			
@@ -321,6 +329,36 @@ public class Game {
 		finally{
 			gameLock.unlock();
 		}
+		if(dist>0) return true;
+		else return false;
+	}
+	
+	public boolean moveRight(int dist){
+		gameLock.lock();
+		
+		try{
+			Cell[][] newBoard = new Cell[width][height];
+			
+			for(int i=dist; i<width; i++){
+				for(int j=0; j<height; j++){
+					newBoard[i][j] = new Cell();
+				}
+			}
+			
+			for(int i=0; i<width-dist; i++){
+				for(int j=0; j<height; j++){
+					newBoard[i][j] = board[i+dist][j];
+				}
+			}
+			
+			board = newBoard;
+			panel.repaint();
+		}
+		finally{
+			gameLock.unlock();
+		}
+		if(dist>0) return true;
+		else return false;
 	}
 	
 	public String toString(){

@@ -23,7 +23,7 @@ public class GamePanel extends JPanel{
 			for(int j=100; j<game.getHeight()-100; j++){
 				if(game.getCell(i, j).isAlive()){
 					g.setColor(new Color(0,80,0));
-					g.fillRect((i-100)*getWidth()/(game.getWidth()-200), (j-100)*getHeight()/(game.getHeight()-200), getWidth()/(game.getWidth()-200), getHeight()/(game.getHeight()-200));
+					g.fillRect((i-game.getMargin())*getWidth()/(game.getWidth()-game.getMargin()*2), (j-game.getMargin())*getHeight()/(game.getHeight()-game.getMargin()*2), getWidth()/(game.getWidth()-game.getMargin()*2), getHeight()/(game.getHeight()-game.getMargin()*2));
 				}
 			}
 		}
