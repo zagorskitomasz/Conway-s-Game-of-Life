@@ -1,2 +1,2 @@
 # Conway-s-Game-of-Life
-Evolution simulation, working with GUI. TODO: save/load.
+Simulation of evolution. All functionalities and features finished. TODO: refactor using design patterns.
