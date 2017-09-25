@@ -1,8 +1,10 @@
 package game;
 
+import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -86,6 +88,55 @@ public class Game {
 		finally{
 			gameLock.unlock();
 		}
+	}
+	
+	public void openField(Scanner field){
+		gameLock.lock();
+		
+		try{
+			try{
+				int w = field.nextInt();
+				int h = field.nextInt();
+				Cell[][] temp = new Cell[w][h];
+				for(int i=0; i<w; i++)
+					for(int j=0; j<h; j++)
+						temp[i][j] = new Cell();
+				
+				while(field.hasNextInt())
+					temp[field.nextInt()][field.nextInt()].setAlive(true);
+				
+				width = w;
+				height = h;
+				board = temp;
+			}
+			catch(Exception e){
+				JOptionPane.showMessageDialog(null, "File broken.", "Error", 0);
+				e.printStackTrace();
+			}
+		}
+		finally{
+			gameLock.unlock();
+		}
+		panel.repaint();
+	}
+	
+	public String saveField(){
+		gameLock.lock();
+		StringBuilder result = new StringBuilder("");
+		
+		try{
+			result.append(width+" "+height+" ");
+			for(int i=0; i<board.length; i++){
+				for(int j=0; j<board[i].length; j++){
+					if(board[i][j].isAlive())
+						result.append(i+" "+j+" ");
+				}
+			}
+		}
+		finally{
+			gameLock.unlock();
+		}
+		return result.toString();
 	}
 	
 	public void setPanel(JPanel p){

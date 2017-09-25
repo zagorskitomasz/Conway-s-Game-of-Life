@@ -5,13 +5,20 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import game.Game;
 
@@ -168,14 +175,43 @@ public class MenuPanel extends JPanel{
 		
 		add(speedPanel, new GBC(0,10,5,1).setWeight(0, 100));
 		
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("maps\\"));
+		chooser.setFileFilter(new FileNameExtensionFilter("Game of Life fields (*.gol)", "gol"));
+		chooser.setAcceptAllFileFilterUsed(false);
+		
 		JButton loadBut = new JButton("Load field");
 		loadBut.setPreferredSize(new Dimension(100,30));
-		loadBut.setEnabled(false);
+		loadBut.addActionListener(l -> {
+			chooser.showOpenDialog(this);
+			File openFile = chooser.getSelectedFile();
+			if(openFile!=null){
+				try{
+					game.openField(new Scanner(openFile));
+				}
+				catch(FileNotFoundException e){
+					JOptionPane.showMessageDialog(null, "File broken.", "Error", 0);
+				}
+			}
+		});
 		add(loadBut, new GBC(0,18,2,1).setWeight(100, 100));
 		
 		JButton saveBut = new JButton("Save field");
 		saveBut.setPreferredSize(new Dimension(100,30));
-		saveBut.setEnabled(false);
+		saveBut.addActionListener(l -> {
+			chooser.showSaveDialog(this);
+			File saveFile = chooser.getSelectedFile();
+			if(saveFile!=null){
+				try {
+					PrintWriter saver = new PrintWriter(saveFile.getPath()+".gol");
+					saver.print(game.saveField());
+					saver.close();
+				} 
+				catch (FileNotFoundException e) {
+					JOptionPane.showMessageDialog(null, "File broken.", "Error", 0);
+				}
+			}
+		});
 		add(saveBut, new GBC(3,18,2,1).setWeight(100, 100));
 		
 		JButton closeBut = new JButton("Close application");
