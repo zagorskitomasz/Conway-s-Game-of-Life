@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Locale;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
@@ -38,7 +39,7 @@ public class MenuPanel extends JPanel{
 		helloPanel.setBackground(new Color(170,200,160));
 		helloPanel.setBorder(BorderFactory.createEtchedBorder());
 		helloPanel.setLayout(new GridBagLayout());
-		helloPanel.setPreferredSize(new Dimension(232,170));
+		helloPanel.setPreferredSize(new Dimension(272,170));
 		
 		JLabel info1 = new JLabel("Conway's Game of Life");
 		info1.setFont(new Font("Serif", Font.BOLD, 20));
@@ -56,7 +57,7 @@ public class MenuPanel extends JPanel{
 		add(helloPanel, new GBC(0,0,5,1).setWeight(0, 100));
 		
 		start = new JButton("Start");
-		start.setPreferredSize(new Dimension(170,32));
+		start.setPreferredSize(new Dimension(200,32));
 		start.addActionListener(l -> {
 			game.start(this);
 			start.setEnabled(false);
@@ -66,7 +67,7 @@ public class MenuPanel extends JPanel{
 		add(start, new GBC(0,2,5,1).setWeight(100, 100));
 		
 		stop = new JButton("Stop");
-		stop.setPreferredSize(new Dimension(170,32));
+		stop.setPreferredSize(new Dimension(200,32));
 		stop.setEnabled(false);
 		stop.addActionListener(l -> {
 			game.stop(this);
@@ -77,7 +78,7 @@ public class MenuPanel extends JPanel{
 		add(stop, new GBC(0,3,5,1).setWeight(100, 100));
 		
 		JButton clearBut = new JButton("Clear");
-		clearBut.setPreferredSize(new Dimension(170,32));
+		clearBut.setPreferredSize(new Dimension(200,32));
 		clearBut.addActionListener(l -> game.clear());
 		add(clearBut, new GBC(0,4,5,1).setWeight(100, 100));
 
@@ -85,7 +86,7 @@ public class MenuPanel extends JPanel{
 		revPanel.setBackground(new Color(170,200,170));
 		revPanel.setBorder(BorderFactory.createEtchedBorder());
 		revPanel.setLayout(new GridBagLayout());
-		revPanel.setPreferredSize(new Dimension(100,150));
+		revPanel.setPreferredSize(new Dimension(120,150));
 		
 		JLabel revLabel = new JLabel("Revive rule:");
 		revPanel.add(revLabel, new GBC(0,6,5,1).setWeight(100, 100).setAnchor(GBC.SOUTH));
@@ -124,7 +125,7 @@ public class MenuPanel extends JPanel{
 		surPanel.setBackground(new Color(170,200,170));
 		surPanel.setBorder(BorderFactory.createEtchedBorder());
 		surPanel.setLayout(new GridBagLayout());
-		surPanel.setPreferredSize(new Dimension(100,150));
+		surPanel.setPreferredSize(new Dimension(120,150));
 		
 		JLabel surLabel = new JLabel("Survive rule:");
 		surPanel.add(surLabel, new GBC(0,10,5,1).setWeight(100, 100).setAnchor(GBC.SOUTH));
@@ -175,13 +176,19 @@ public class MenuPanel extends JPanel{
 		
 		add(speedPanel, new GBC(0,10,5,1).setWeight(0, 100));
 		
+		String separator;
+		if(System.getProperty("os.name").toLowerCase(Locale.ENGLISH).indexOf("win")>=0)
+			separator = "\\";
+		else
+			separator = "/";
+		
 		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new File("maps\\"));
+		chooser.setCurrentDirectory(new File("maps"+separator));
 		chooser.setFileFilter(new FileNameExtensionFilter("Game of Life fields (*.gol)", "gol"));
 		chooser.setAcceptAllFileFilterUsed(false);
 		
 		JButton loadBut = new JButton("Load field");
-		loadBut.setPreferredSize(new Dimension(100,30));
+		loadBut.setPreferredSize(new Dimension(120,30));
 		loadBut.addActionListener(l -> {
 			chooser.showOpenDialog(this);
 			File openFile = chooser.getSelectedFile();
@@ -197,7 +204,7 @@ public class MenuPanel extends JPanel{
 		add(loadBut, new GBC(0,18,2,1).setWeight(100, 100));
 		
 		JButton saveBut = new JButton("Save field");
-		saveBut.setPreferredSize(new Dimension(100,30));
+		saveBut.setPreferredSize(new Dimension(120,30));
 		saveBut.addActionListener(l -> {
 			chooser.showSaveDialog(this);
 			File saveFile = chooser.getSelectedFile();
@@ -215,7 +222,7 @@ public class MenuPanel extends JPanel{
 		add(saveBut, new GBC(3,18,2,1).setWeight(100, 100));
 		
 		JButton closeBut = new JButton("Close application");
-		closeBut.setPreferredSize(new Dimension(150,30));
+		closeBut.setPreferredSize(new Dimension(200,30));
 		closeBut.addActionListener(l -> System.exit(0));
 		add(closeBut, new GBC(0,19,5,1).setWeight(100, 100));
 		
@@ -225,7 +232,7 @@ public class MenuPanel extends JPanel{
 		infoPanel.setLayout(new GridBagLayout());
 		infoPanel.setPreferredSize(new Dimension(232,60));
 		
-		JLabel nameLabel = new JLabel("Author: Tomasz Zagórski");
+		JLabel nameLabel = new JLabel("Author: Tomasz Zagorski");
 		infoPanel.add(nameLabel, new GBC(0,20,5,1).setWeight(100, 100));
 		
 		JLabel mailLabel = new JLabel("zagorskitomasz@gmail.com");

@@ -47,9 +47,9 @@ public class MainFrame extends JFrame{
 		menuPanel.setBackground(new Color(170,200,170));
 		gamePanel.setBackground(new Color(255,255,255));
 		
-		menuPanel.setPreferredSize(new Dimension(270,650));
+		menuPanel.setPreferredSize(new Dimension(340,650));
 		gamePanel.setPreferredSize(new Dimension(650,650));
-		menuPanel.setMinimumSize(new Dimension(270,650));
+		menuPanel.setMinimumSize(new Dimension(340,650));
 		
 		add(menuPanel, new GBC(0,0,1,1).setFill(GBC.BOTH).setWeight(0, 100));
 		add(gamePanel, new GBC(1,0,1,1).setFill(GBC.BOTH).setWeight(100, 100));
