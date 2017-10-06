@@ -14,7 +14,7 @@ You can watch short video of application running.
 
 # How can I run it?
 
-You can download repository and compile or download runnable JAR here: ![runnable JAR](https://drive.google.com/open?id=0B_bwkWjLwn2MOFZpZURiT2YxdlU).
+You can compile src/gui/GameOfLife.java or download runnable JAR here: ![runnable JAR](https://drive.google.com/open?id=0B_bwkWjLwn2MOFZpZURiT2YxdlU).
 
 # How can it be improved?
 
