@@ -8,7 +8,7 @@ Build in Swing. Game of Life is very simple cellular automaton devised by John H
 
 # How does it look like?
 
-You can wath short video of application running.
+You can watch short video of application running.
 
 [![Video](https://img.youtube.com/vi/rALVuPR25yk/0.jpg)](https://youtu.be/rALVuPR25yk)
 
