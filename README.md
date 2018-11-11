@@ -1,3 +1,5 @@
+# Project functionally finished / legacy code
+
 # Conway's Game of Life
 
 ![Image](https://zagorskidev.files.wordpress.com/2017/10/zrzut-ekranu-z-2017-10-05-14-05-38.png?w=723)
